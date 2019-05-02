@@ -2,6 +2,10 @@ class ErrorHandler{
 
   constructor (){}
 
+  static errorCustomMessage(message, res){
+    res.status(422).json({error: message});
+  }
+
   static processBadRequestError(errors, res){
     res.status(422).json({errors: errors.array()});
   }

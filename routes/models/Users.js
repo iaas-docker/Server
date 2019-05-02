@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+const {body} = require('express-validator/check');
 
 var userSchema = new mongoose.Schema({
   _id: String,

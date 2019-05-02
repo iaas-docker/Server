@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var admin = require("firebase-admin");
 const {header, body, validationResult} = require('express-validator/check');
-var firebase = require('firebase');
 const {PhysicalMachine, MachineStatus} = require('../../models/PhysicalMachine');
+const {IpAddress} = require('../../models/IpAddress');
 const Authentication = require('../../helpers/authentication');
 const ErrorHandler = require('../../helpers/error-handler');
 
@@ -13,20 +12,38 @@ router.post('/', validateInput(), (req, res) => {
   if (!errors.isEmpty()) {
     return ErrorHandler.processBadRequestError(errors, res);
   }
-
+  
+  const {name, mac, cores, memory, freeRam, freeMemory, operatingSystem, ipAddressId} = req.body;
+  console.log('File: create.js, Line 16', ipAddressId);
   Authentication.verifyAdminToken(req.headers.auth_token)
-    .then(response => {
-      const {name, mac, cores, memory, freeRam, freeMemory, operatingSystem, ipAddressId} = req.body;
-      let newMachine = {name, mac, cores, memory, freeRam, freeMemory, operatingSystem, ipAddressId};
+    .then(async response => {
+      let errorMessage = await performChecks(mac, ipAddressId);
+      if (errorMessage !== undefined ){
+        return ErrorHandler.errorCustomMessage(errorMessage, res);
+      }
+
+      let newMachine = {name, mac, cores, memory, freeRam, freeMemory, operatingSystem, ipAddressId, '_id': mac};
       newMachine.status = MachineStatus.RUNNING;
-      console.log('File: create.js, Line 22', newMachine);
       let physicalMachine = new PhysicalMachine(newMachine);
-      return physicalMachine.save()
+      return physicalMachine.save();
     })
     .then(response => res.json(response))
     .catch(err => ErrorHandler.processError(err, res));
 
 });
+
+async function performChecks(mac, ipAddressId) {
+  if ( (await PhysicalMachine.findById(mac)) != null){
+    return 'The machine already exists.';
+  }
+  if ( (IpAddress.findById(ipAddressId)) == null){
+    return 'The ip address does not exist';
+  }
+  if ( (PhysicalMachine.findOne({ipAddressId: ipAddressId})) != null){
+    return 'There is already a machine with that ip address';
+  }
+  return undefined;
+}
 
 function validateInput() {
   return [

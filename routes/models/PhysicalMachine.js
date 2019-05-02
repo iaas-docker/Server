@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var physicalMachineSchema = new mongoose.Schema({
+  _id: String,
   name: String,
   mac: String,
   cores: Number,

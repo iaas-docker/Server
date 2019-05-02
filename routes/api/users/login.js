@@ -1,9 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var admin = require("firebase-admin");
+const {body, validationResult} = require('express-validator/check');
 var firebase = require('firebase');
 
-router.post('/', function(req, res, next) {
+router.post('/', validateInput(), (req, res) => {
+  //Verify all required params are present
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({errors: errors.array()});
+  }
+
   let email = req.body.email;
   let password = req.body.password;
   firebase.auth().signInWithEmailAndPassword(email, password)
@@ -29,7 +36,11 @@ function createUserToken(userId) {
   });
 }
 
-
-
+function validateInput() {
+  return [
+    body('email').isEmail(),
+    body('password').exists()
+  ]
+}
 
 module.exports = router;

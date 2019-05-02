@@ -6,7 +6,7 @@ const User = require('../../models/Users');
 const portusRest = require('../../helpers/axios-helper').portusInstance();
 const ErrorHandler = require('../../helpers/error-handler');
 
-router.post('/', validate(), (req, res, next) => {
+router.post('/', validateInput(), (req, res, next) => {
   //Verify all required params are present
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -54,7 +54,7 @@ function portusTokenRequest(userId) {
   });
 }
 
-function validate() {
+function validateInput() {
   return [
     body('email').isEmail(),
     body('name').exists(),

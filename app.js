@@ -39,7 +39,7 @@ mongoose.connect('mongodb://heroku_35k6mstx:vcd4tie3o1hjsdoelvmtjm9h9q@ds147436.
 //Initialize firebase client
 var firebase = require("firebase/app");
 var firebaseConfig = {
-  apiKey: "AIzaSyBdYEkAfTcU4dowyIyaBuuRC6wsQmlm7D8",
+  apiKey: process.env.FIREBASE_CLIENT_API_KEY,
   authDomain: "iaasuniandes.firebaseapp.com",
   databaseURL: "https://iaasuniandes.firebaseio.com",
   projectId: "iaasuniandes",

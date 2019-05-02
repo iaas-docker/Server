@@ -1,18 +1,17 @@
 var express = require('express');
 var router = express.Router();
-var admin = require("firebase-admin");
 const {body, validationResult} = require('express-validator/check');
 var firebase = require('firebase');
+const ErrorHandler = require('../../helpers/error-handler');
 
 router.post('/', validateInput(), (req, res) => {
   //Verify all required params are present
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({errors: errors.array()});
+    return ErrorHandler.processBadRequestError(errors, res);
   }
 
-  let email = req.body.email;
-  let password = req.body.password;
+  const {email, password} = req.body;
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then( response => {
       let newUser = response.user;
@@ -21,16 +20,13 @@ router.post('/', validateInput(), (req, res) => {
       res.send(token);
       firebase.auth().signOut();
     }).catch((error) => {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      res.status(500);
-      res.json({error: errorCode+": "+errorMessage})
+      ErrorHandler.processError(error, res);
   } );
 });
 
 function createUserToken(userId) {
   return new Promise((resolve, reject) => {
-    admin.auth().createCustomToken(userId)
+    firebase.auth().currentUser.getIdToken(true)
       .then((customToken) => { resolve(customToken) })
       .catch((error) => reject(error) );
   });
@@ -39,7 +35,7 @@ function createUserToken(userId) {
 function validateInput() {
   return [
     body('email').isEmail(),
-    body('password').exists()
+    body('password').isString()
   ]
 }
 

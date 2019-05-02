@@ -5,7 +5,8 @@ var userSchema = new mongoose.Schema({
   name: String,
   email: String,
   portusId: Number,
-  portusToken: String
+  portusToken: String,
+  admin: Boolean
 });
 
 userSchema.methods.getId = function () {

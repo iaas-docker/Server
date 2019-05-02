@@ -10,11 +10,11 @@ router.post('/', validateInput(), (req, res, next) => {
   //Verify all required params are present
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({errors: errors.array()});
+    return ErrorHandler.processBadRequestError(errors, res);
   }
 
   const {email, name, password} = req.body;
-  let newUser = {email, name};
+  let newUser = {email, name, admin: false};
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then( response => {
       newUser['_id'] = response.user.uid;
@@ -57,8 +57,8 @@ function portusTokenRequest(userId) {
 function validateInput() {
   return [
     body('email').isEmail(),
-    body('name').exists(),
-    body('password').isLength({min: 9})
+    body('name').isString(),
+    body('password').isString().isLength({min: 9})
   ]
 }
 

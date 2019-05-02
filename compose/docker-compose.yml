@@ -2,7 +2,7 @@ version: "2"
 
 services:
   portus:
-    image: opensuse/portus:head
+    image: opensuse/portus:2.4
     environment:
       - PORTUS_MACHINE_FQDN_VALUE=${MACHINE_FQDN}
 
@@ -34,7 +34,7 @@ services:
       - static:/srv/Portus/public
 
   background:
-    image: opensuse/portus:head
+    image: opensuse/portus:2.4
     depends_on:
       - portus
       - db

@@ -33,8 +33,8 @@ app.use(function(req, res, next) {
 });
 
 //Initialize mongoose
-var mongoose = require('mongoose')
-mongoose.connect('mongodb://heroku_35k6mstx:vcd4tie3o1hjsdoelvmtjm9h9q@ds147436.mlab.com:47436/heroku_35k6mstx', {useNewUrlParser: true});
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true});
 
 //Initialize firebase client
 var firebase = require("firebase/app");

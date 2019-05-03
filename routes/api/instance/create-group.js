@@ -20,7 +20,7 @@ router.post('/', validateInput(), (req, res) => {
   Authentication.verifyUserToken(req.headers.auth_token)
     .then((user) => {
       userId = user['_id'];
-      instanceGroup = {name, userId}
+      instanceGroup = {name, userId};
       let instanceGroupDB = new InstanceGroup(instanceGroup);
       return instanceGroupDB.save()
     })
@@ -32,13 +32,17 @@ router.post('/', validateInput(), (req, res) => {
           instanceGroupId: response['_id'], baseImageId: imageId,
           status: InstanceStatus.CREATING
         };
-        let r = await (new Instance(newInstance)).save();
-        list.push(r);
-        console.log('File: create-group.js, Line 35', r);
+        let createdInst = await (new Instance(newInstance)).save();
+        list.push(createdInst);
       };
-      res.json(list)
+
+      res.json({
+        '_id':response['_id'],
+        name: response.name,
+        instances: list
+      });
     })
-    .then(response => res.json(response))
+    // .then(response => res.json(response))
     .catch(err => ErrorHandler.processError(err, res));
 
 });

@@ -24,5 +24,5 @@ const STATUS = Object.freeze({
 
 module.exports = {
   Instance: Instance,
-  IpStatus: STATUS
+  InstanceStatus: STATUS
 };

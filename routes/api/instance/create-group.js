@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const {header, body, validationResult} = require('express-validator/check');
 const {InstanceGroup} = require('../../models/InstanceGroup');
+const {Instance, InstanceStatus} = require('../../models/Instance');
 const Authentication = require('../../helpers/authentication');
 const ErrorHandler = require('../../helpers/error-handler');
 
@@ -23,15 +24,19 @@ router.post('/', validateInput(), (req, res) => {
       let instanceGroupDB = new InstanceGroup(instanceGroup);
       return instanceGroupDB.save()
     })
-    .then(response => {
-      instances.forEach(instance => {
+    .then(async response => {
+      let list = [];
+      for (const instance of instances) {
         const {name, cores, memory, storage, imageId } = instance;
-        let newInstance = {name, cores, memory, storage, imageId, userId: userId }
-      });
-      // let newIp = {ip, mask, gateway};
-      // newIp.status = IpStatus.UN_ASSIGNED;
-      // let ipAddress = new IpAddress(newIp);
-      // return ipAddress.save();
+        let newInstance = {name, cores, memory, storage, imageId, userId: userId,
+          instanceGroupId: response['_id'], baseImageId: imageId,
+          status: InstanceStatus.CREATING
+        };
+        let r = await (new Instance(newInstance)).save();
+        list.push(r);
+        console.log('File: create-group.js, Line 35', r);
+      };
+      res.json(list)
     })
     .then(response => res.json(response))
     .catch(err => ErrorHandler.processError(err, res));

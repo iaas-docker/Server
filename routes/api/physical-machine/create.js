@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const {header, body, validationResult} = require('express-validator/check');
 const {PhysicalMachine, MachineStatus} = require('../../models/PhysicalMachine');
-const {IpAddress} = require('../../models/IpAddress');
+const {IpAddress, IpStatus} = require('../../models/IpAddress');
 const Authentication = require('../../helpers/authentication');
 const ErrorHandler = require('../../helpers/error-handler');
 
@@ -14,13 +14,14 @@ router.post('/', validateInput(), (req, res) => {
   }
   
   const {name, mac, cores, memory, freeRam, freeMemory, operatingSystem, ipAddressId} = req.body;
-  console.log('File: create.js, Line 16', ipAddressId);
   Authentication.verifyAdminToken(req.headers.auth_token)
     .then(async response => {
       let errorMessage = await performChecks(mac, ipAddressId);
       if (errorMessage !== undefined ){
         return ErrorHandler.errorCustomMessage(errorMessage, res);
       }
+
+      await changeIpStatus(ipAddressId);
 
       let newMachine = {name, mac, cores, memory, freeRam, freeMemory, operatingSystem, ipAddressId, '_id': mac};
       newMachine.status = MachineStatus.RUNNING;
@@ -32,14 +33,18 @@ router.post('/', validateInput(), (req, res) => {
 
 });
 
+async function changeIpStatus(ipId) {
+  await IpAddress.updateOne({ '_id': ipId}, { status: IpStatus.ASSIGNED });
+}
+
 async function performChecks(mac, ipAddressId) {
   if ( (await PhysicalMachine.findById(mac)) != null){
     return 'The machine already exists.';
   }
-  if ( (IpAddress.findById(ipAddressId)) == null){
+  if ( (await IpAddress.findById(ipAddressId)) == null){
     return 'The ip address does not exist';
   }
-  if ( (PhysicalMachine.findOne({ipAddressId: ipAddressId})) != null){
+  if ( (await PhysicalMachine.findOne({ipAddressId: ipAddressId})) != null){
     return 'There is already a machine with that ip address';
   }
   return undefined;

@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-const {body} = require('express-validator/check');
 
 var ipAddressSchema = new mongoose.Schema({
   ip: String,

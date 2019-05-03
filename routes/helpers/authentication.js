@@ -9,7 +9,7 @@ class Authentication {
         .then((decodedToken) => {
           return User.findById(decodedToken.uid)
         }).then( user => {
-          if (user.admin)
+          if (user && user.admin)
             resolve(user.admin);
           else
             reject('User is not an admin');

@@ -41,8 +41,12 @@ async function performChecks(mac, ipAddressId) {
   if ( (await PhysicalMachine.findById(mac)) != null){
     return 'The machine already exists.';
   }
-  if ( (await IpAddress.findById(ipAddressId)) == null){
+  let ipAddress= await IpAddress.findById(ipAddressId);
+  if (ipAddressId == null){
     return 'The ip address does not exist';
+  }
+  if (ipAddress.status == IpStatus.ASSIGNED){
+    return 'The ip address is already assigned';
   }
   if ( (await PhysicalMachine.findOne({ipAddressId: ipAddressId})) != null){
     return 'There is already a machine with that ip address';

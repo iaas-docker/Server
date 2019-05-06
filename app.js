@@ -8,8 +8,6 @@ var indexRouter = require('./routes/index');
 const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
 
-
-
 var app = express();
 
 app.use(bodyParser.json())

@@ -5,5 +5,6 @@ router.use('/users', require('./users'));
 router.use('/physical-machine', require('./physical-machine'));
 router.use('/ip-address', require('./ip-address'));
 router.use('/instance', require('./instance'));
+router.use('/image', require('./image'));
 
 module.exports = router;

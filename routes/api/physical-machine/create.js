@@ -25,8 +25,7 @@ router.post('/', validateInput(), (req, res) => {
 
       let newMachine = {name, mac, cores, memory, freeRam, freeMemory, operatingSystem, ipAddressId, '_id': mac};
       newMachine.status = MachineStatus.RUNNING;
-      let physicalMachine = new PhysicalMachine(newMachine);
-      return physicalMachine.save();
+      return new PhysicalMachine(newMachine).save();
     })
     .then(response => res.json(response))
     .catch(err => ErrorHandler.processError(err, res));

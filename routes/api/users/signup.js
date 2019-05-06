@@ -26,8 +26,7 @@ router.post('/', validateInput(), (req, res, next) => {
     })
     .then( response => {
       newUser.portusToken = response.data.plain_token;
-      let dbUser = new User(newUser);
-      return dbUser.save()
+      return new User(newUser).save();
     })
     .then( response => res.json(response) )
     .catch((error) => {

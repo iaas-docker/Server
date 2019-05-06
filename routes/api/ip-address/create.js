@@ -22,8 +22,7 @@ router.post('/', validateInput(), (req, res) => {
 
       let newIp = {ip, mask, gateway};
       newIp.status = IpStatus.UN_ASSIGNED;
-      let ipAddress = new IpAddress(newIp);
-      return ipAddress.save();
+      return new IpAddress(newIp).save();
     })
     .then(response => res.json(response))
     .catch(err => ErrorHandler.processError(err, res));

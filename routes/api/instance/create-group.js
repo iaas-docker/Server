@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const {header, body, validationResult} = require('express-validator/check');
 const {InstanceGroup} = require('../../models/InstanceGroup');
-const {Instance, InstanceStatus} = require('../../models/Instance');
+const {Instance, InstanceStates} = require('../../models/Instance');
 const {Image} = require('../../models/Image');
 const Authentication = require('../../helpers/authentication');
 const ErrorHandler = require('../../helpers/error-handler');
@@ -36,7 +36,7 @@ router.post('/', validateInput(), (req, res) => {
         const {name, cores, memory, storage, imageId} = instance;
         let newInstance = {name, cores, memory, storage, imageId, userId: userId,
           instanceGroupId: response['_id'], baseImageId: imageId,
-          status: InstanceStatus.CREATING
+          state: InstanceStates.CREATING
         };
         let createdInst = await (new Instance(newInstance)).save();
         await queue.sendMessage(createdInst, WORKER);

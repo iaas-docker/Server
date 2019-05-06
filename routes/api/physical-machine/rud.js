@@ -1,15 +1,13 @@
 var express = require('express');
 var router = express.Router();
-const {IpAddress, IpStates} = require('../../models/IpAddress');
+const {PhysicalMachine} = require('../../models/PhysicalMachine');
 const ErrorHandler = require('../../helpers/error-handler');
 const Authentication = require('../../helpers/authentication');
 
 router.get('/list', (req, res) => {
   Authentication.verifyAdminToken(req.headers.auth_token)
-    .then((r) => IpAddress.find())
-    .then(response => {
-      res.json(response);
-    })
+    .then((r) => PhysicalMachine.find())
+    .then(response => res.json(response) )
     .catch(err => ErrorHandler.processError(err, res));
 });
 

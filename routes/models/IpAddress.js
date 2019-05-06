@@ -5,18 +5,18 @@ var ipAddressSchema = new mongoose.Schema({
   //Decimal
   mask: String,
   gateway: String,
-  status: String
+  state: String
 });
 
 ipAddressSchema.index({ ip: 1, mask: 1, gateway: 1 }, { unique: true });
 var IpAddress = mongoose.model('IpAddress', ipAddressSchema);
 
-const STATUS = Object.freeze({
+const STATES = Object.freeze({
   ASSIGNED:     "assigned",
   UN_ASSIGNED:  "unassigned",
 });
 
 module.exports = {
   IpAddress: IpAddress,
-  IpStatus: STATUS
+  IpStates: STATES
 };

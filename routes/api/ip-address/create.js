@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const {header, body, validationResult} = require('express-validator/check');
-const {IpAddress, IpStatus} = require('../../models/IpAddress');
+const {IpAddress, IpStates} = require('../../models/IpAddress');
 const Authentication = require('../../helpers/authentication');
 const ErrorHandler = require('../../helpers/error-handler');
 
@@ -21,7 +21,7 @@ router.post('/', validateInput(), (req, res) => {
       }
 
       let newIp = {ip, mask, gateway};
-      newIp.status = IpStatus.UN_ASSIGNED;
+      newIp.state = IpStates.UN_ASSIGNED;
       return new IpAddress(newIp).save();
     })
     .then(response => res.json(response))

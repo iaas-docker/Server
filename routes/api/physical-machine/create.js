@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const {header, body, validationResult} = require('express-validator/check');
-const {PhysicalMachine, MachineStatus} = require('../../models/PhysicalMachine');
-const {IpAddress, IpStatus} = require('../../models/IpAddress');
+const {PhysicalMachine, MachineStates} = require('../../models/PhysicalMachine');
+const {IpAddress, IpStates} = require('../../models/IpAddress');
 const Authentication = require('../../helpers/authentication');
 const ErrorHandler = require('../../helpers/error-handler');
 
@@ -13,7 +13,7 @@ router.post('/', validateInput(), (req, res) => {
     return ErrorHandler.processBadRequestError(errors, res);
   }
   
-  const {name, mac, cores, memory, freeRam, freeMemory, operatingSystem, ipAddressId} = req.body;
+  const {name, mac, cores, memory, freeCores,freeRam, freeMemory, operatingSystem, ipAddressId} = req.body;
   Authentication.verifyAdminToken(req.headers.auth_token)
     .then(async response => {
       let errorMessage = await performChecks(mac, ipAddressId);
@@ -21,10 +21,10 @@ router.post('/', validateInput(), (req, res) => {
         return ErrorHandler.errorCustomMessage(errorMessage, res);
       }
 
-      await changeIpStatus(ipAddressId);
+      await changeIpStateToAssigned(ipAddressId);
 
-      let newMachine = {name, mac, cores, memory, freeRam, freeMemory, operatingSystem, ipAddressId, '_id': mac};
-      newMachine.status = MachineStatus.RUNNING;
+      let newMachine = {name, mac, cores, memory, freeCores, freeRam, freeMemory, operatingSystem, ipAddressId, '_id': mac};
+      newMachine.state = MachineStates.RUNNING;
       return new PhysicalMachine(newMachine).save();
     })
     .then(response => res.json(response))
@@ -32,19 +32,19 @@ router.post('/', validateInput(), (req, res) => {
 
 });
 
-async function changeIpStatus(ipId) {
-  await IpAddress.updateOne({ '_id': ipId}, { status: IpStatus.ASSIGNED });
+async function changeIpStateToAssigned(ipId) {
+  await IpAddress.updateOne({ '_id': ipId}, { state: IpStates.ASSIGNED });
 }
 
 async function performChecks(mac, ipAddressId) {
   if ( (await PhysicalMachine.findById(mac)) != null){
     return 'The machine already exists.';
   }
-  let ipAddress= await IpAddress.findById(ipAddressId);
-  if (ipAddressId == null){
+  let ipAddress = await IpAddress.findById(ipAddressId);
+  if (ipAddress == null){
     return 'The ip address does not exist';
   }
-  if (ipAddress.status == IpStatus.ASSIGNED){
+  if (ipAddress.state == IpStates.ASSIGNED){
     return 'The ip address is already assigned';
   }
   if ( (await PhysicalMachine.findOne({ipAddressId: ipAddressId})) != null){

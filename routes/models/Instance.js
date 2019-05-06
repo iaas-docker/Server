@@ -11,12 +11,12 @@ var instance = new mongoose.Schema({
   baseImageId: String,
   physicalMachineId: String,
   ipAddressId: String,
-  status: String
+  state: String
 });
 
 var Instance = mongoose.model('Instance', instance);
 
-const STATUS = Object.freeze({
+const STATES = Object.freeze({
   CREATING:     "creating",
   RUNNING:  "running",
 });
@@ -24,5 +24,5 @@ const STATUS = Object.freeze({
 
 module.exports = {
   Instance: Instance,
-  InstanceStatus: STATUS
+  InstanceStates: STATES
 };

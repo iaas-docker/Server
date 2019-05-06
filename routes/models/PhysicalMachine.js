@@ -15,7 +15,7 @@ var physicalMachineSchema = new mongoose.Schema({
   state: String
 });
 
-const STATUS = Object.freeze({
+const STATES = Object.freeze({
   SHUT_DOWN:    "shut_down",
   RUNNING:      "running",
 });
@@ -24,5 +24,5 @@ var PhysicalMachine = mongoose.model('PhysicalMachine', physicalMachineSchema);
 
 module.exports = {
   PhysicalMachine: PhysicalMachine,
-  MachineStatus: STATUS
+  MachineStates: STATES
 };

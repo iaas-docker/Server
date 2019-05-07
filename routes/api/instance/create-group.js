@@ -33,10 +33,10 @@ router.post('/', validateInput(), (req, res) => {
     .then(async response => {
       let list = [];
       for (const instance of instances) {
-        const {name, cores, memory, storage, imageId} = instance;
-        let newInstance = {name, cores, memory, storage, imageId, userId: userId,
+        const {name, cores, ram, memory, imageId} = instance;
+        let newInstance = {name, cores, ram, memory, imageId, userId: userId,
           instanceGroupId: response['_id'], baseImageId: imageId,
-          state: InstanceStates.CREATING
+          state: InstanceStates.CREATING, stateMessage: 'Allocating resources'
         };
         let createdInst = await (new Instance(newInstance)).save();
         await queue.sendMessage(createdInst, WORKER);
@@ -69,8 +69,8 @@ function validateInput() {
     body('instances').isArray(),
     body('instances.*.name').isString(),
     body('instances.*.cores').isNumeric(),
+    body('instances.*.ram').isNumeric(),
     body('instances.*.memory').isNumeric(),
-    body('instances.*.storage').isNumeric(),
     body('instances.*.imageId').isString(),
     header('auth_token').exists()
   ]

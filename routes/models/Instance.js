@@ -11,13 +11,15 @@ var instance = new mongoose.Schema({
   baseImageId: String,
   physicalMachineId: String,
   ipAddressId: String,
-  state: String
+  state: String,
+  stateMessage: String
 });
 
 var Instance = mongoose.model('Instance', instance);
 
 const STATES = Object.freeze({
   CREATING:     "creating",
+  RESOURCES_ASSIGNED:     "resources_assigned",
   RUNNING:  "running",
 });
 

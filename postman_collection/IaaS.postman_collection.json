@@ -1,0 +1,592 @@
+{
+	"info": {
+		"_postman_id": "d2192a51-b2d5-4f90-a1bc-fb27df7b93be",
+		"name": "IaaS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"p@p.com\",\n\t\"password\":\"asdasdasd\",\n\t\"name\": \"das\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"p@p.com\",\n\t\"password\":\"asdasdasd\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNAYy5jb20iLCJpZCI6IjVjYzIwMmJkYWUxNjQzMDU4ZmI5Yzg3YiIsImV4cCI6MTU2MTQwMjc1MSwiaWF0IjoxNTU2MjE4NzUxfQ.ps03p11AQ3ASP9koHoQg8shax9iVjsWPnBDruVDhJUY",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/deleteAll?",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"deleteAll"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Portus",
+			"item": [
+				{
+					"name": "Create new user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Portus-Auth",
+								"value": "admin:7jkyz4m-QuzbduHnSN-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"user\":{\n\t\t\"username\":\"c@cadasaas.com\",\n\t\t\"email\":\"c@dsacaa.com\",\n\t\t\"display_name\":\"Carl Saedsasgan\",\n\t\t\"password\":\"asdasdasd\",\n\t\t\"bot\": true\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{portusBaseUrl}}/api/v1/users",
+							"host": [
+								"{{portusBaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Portus-Auth",
+								"value": "admin:7jkyz4m-QuzbduHnSN-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{portusBaseUrl}}/api/v1/users/18/application_tokens?application=IaaS",
+							"host": [
+								"{{portusBaseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"18",
+								"application_tokens"
+							],
+							"query": [
+								{
+									"key": "application",
+									"value": "IaaS"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Resources",
+			"item": [
+				{
+					"name": "Create physical machine",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "auth_token",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4MDEwNjVlNGI1NjNhZWVlZWIzNTkwOTEwZDlmOTc3YTgxMjMwOWEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaWFhc3VuaWFuZGVzIiwiYXVkIjoiaWFhc3VuaWFuZGVzIiwiYXV0aF90aW1lIjoxNTU3MTcwMzczLCJ1c2VyX2lkIjoibHZ1Z3VHSGVPcGFpSzE1djRsZjdoaE1zZlMyMyIsInN1YiI6Imx2dWd1R0hlT3BhaUsxNXY0bGY3aGhNc2ZTMjMiLCJpYXQiOjE1NTcxNzAzNzQsImV4cCI6MTU1NzE3Mzk3NCwiZW1haWwiOiJwQHAuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInBAcC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.P-4KxeYD23hyTw0_kF9djRr6wkzZss4K7gvendD8b8YwpsNwLIpfuM5t9g2EId1xn9T0oSu2AnqUFMOEGi9zBSDVmNFWE7nNSouArA1ydjdmdkak1JJbWJJbI3cKd6s3g4AT_3U2RPcSlcV0LyZGo4yvGT1u_BAP0YgvVacN8-dIC26t3b_Y8fGRoCuyDxYgTjkOsrb74nZqRpG3qg9PHDWq91H1-DTfkt3p3843fV91CImH-8yG2zzKv5gnMQvDJB7ib4LyRVoisvuScD2oP-h4S36q1dOlC9CNoxEwkuaWrMA-7-Kxk97xHXRj7Ra1jAANQ-_nD5rj5IU9KBpkOA",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Machine 1\",\n  \"mac\": \"AB:12:CD:34:EF:63\",\n  \"cores\": 4,\n  \"ram\": 8000,\n  \"memory\": 500000,\n  \"freeCores\": 2,\n  \"freeRam\": 4000,\n  \"freeMemory\": 250000,\n  \"operatingSystem\": \"Ubuntu\",\n  \"ipAddressId\": \"5cd09c5a8ce33909f2f9a4a9\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/physical-machine/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"physical-machine",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create ip address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "auth_token",
+								"type": "text",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4MDEwNjVlNGI1NjNhZWVlZWIzNTkwOTEwZDlmOTc3YTgxMjMwOWEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaWFhc3VuaWFuZGVzIiwiYXVkIjoiaWFhc3VuaWFuZGVzIiwiYXV0aF90aW1lIjoxNTU3MTcwMzczLCJ1c2VyX2lkIjoibHZ1Z3VHSGVPcGFpSzE1djRsZjdoaE1zZlMyMyIsInN1YiI6Imx2dWd1R0hlT3BhaUsxNXY0bGY3aGhNc2ZTMjMiLCJpYXQiOjE1NTcxNzAzNzQsImV4cCI6MTU1NzE3Mzk3NCwiZW1haWwiOiJwQHAuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInBAcC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.P-4KxeYD23hyTw0_kF9djRr6wkzZss4K7gvendD8b8YwpsNwLIpfuM5t9g2EId1xn9T0oSu2AnqUFMOEGi9zBSDVmNFWE7nNSouArA1ydjdmdkak1JJbWJJbI3cKd6s3g4AT_3U2RPcSlcV0LyZGo4yvGT1u_BAP0YgvVacN8-dIC26t3b_Y8fGRoCuyDxYgTjkOsrb74nZqRpG3qg9PHDWq91H1-DTfkt3p3843fV91CImH-8yG2zzKv5gnMQvDJB7ib4LyRVoisvuScD2oP-h4S36q1dOlC9CNoxEwkuaWrMA-7-Kxk97xHXRj7Ra1jAANQ-_nD5rj5IU9KBpkOA",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Ip custom 1\",\n  \"ip\": \"192.168.0.1\",\n  \"gateway\": \"192.168.0.0\",\n  \"mask\": \"255.255.255.0\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ip-address/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ip-address",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List ip address",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "auth_token",
+								"type": "text",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4MDEwNjVlNGI1NjNhZWVlZWIzNTkwOTEwZDlmOTc3YTgxMjMwOWEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaWFhc3VuaWFuZGVzIiwiYXVkIjoiaWFhc3VuaWFuZGVzIiwiYXV0aF90aW1lIjoxNTU3MTcwMzczLCJ1c2VyX2lkIjoibHZ1Z3VHSGVPcGFpSzE1djRsZjdoaE1zZlMyMyIsInN1YiI6Imx2dWd1R0hlT3BhaUsxNXY0bGY3aGhNc2ZTMjMiLCJpYXQiOjE1NTcxNzAzNzQsImV4cCI6MTU1NzE3Mzk3NCwiZW1haWwiOiJwQHAuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInBAcC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.P-4KxeYD23hyTw0_kF9djRr6wkzZss4K7gvendD8b8YwpsNwLIpfuM5t9g2EId1xn9T0oSu2AnqUFMOEGi9zBSDVmNFWE7nNSouArA1ydjdmdkak1JJbWJJbI3cKd6s3g4AT_3U2RPcSlcV0LyZGo4yvGT1u_BAP0YgvVacN8-dIC26t3b_Y8fGRoCuyDxYgTjkOsrb74nZqRpG3qg9PHDWq91H1-DTfkt3p3843fV91CImH-8yG2zzKv5gnMQvDJB7ib4LyRVoisvuScD2oP-h4S36q1dOlC9CNoxEwkuaWrMA-7-Kxk97xHXRj7Ra1jAANQ-_nD5rj5IU9KBpkOA",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ip-address/list",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ip-address",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List physical machines",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "auth_token",
+								"type": "text",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4MDEwNjVlNGI1NjNhZWVlZWIzNTkwOTEwZDlmOTc3YTgxMjMwOWEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaWFhc3VuaWFuZGVzIiwiYXVkIjoiaWFhc3VuaWFuZGVzIiwiYXV0aF90aW1lIjoxNTU3MTcwMzczLCJ1c2VyX2lkIjoibHZ1Z3VHSGVPcGFpSzE1djRsZjdoaE1zZlMyMyIsInN1YiI6Imx2dWd1R0hlT3BhaUsxNXY0bGY3aGhNc2ZTMjMiLCJpYXQiOjE1NTcxNzAzNzQsImV4cCI6MTU1NzE3Mzk3NCwiZW1haWwiOiJwQHAuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInBAcC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.P-4KxeYD23hyTw0_kF9djRr6wkzZss4K7gvendD8b8YwpsNwLIpfuM5t9g2EId1xn9T0oSu2AnqUFMOEGi9zBSDVmNFWE7nNSouArA1ydjdmdkak1JJbWJJbI3cKd6s3g4AT_3U2RPcSlcV0LyZGo4yvGT1u_BAP0YgvVacN8-dIC26t3b_Y8fGRoCuyDxYgTjkOsrb74nZqRpG3qg9PHDWq91H1-DTfkt3p3843fV91CImH-8yG2zzKv5gnMQvDJB7ib4LyRVoisvuScD2oP-h4S36q1dOlC9CNoxEwkuaWrMA-7-Kxk97xHXRj7Ra1jAANQ-_nD5rj5IU9KBpkOA",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/physical-machine/list",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"physical-machine",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e97a5e46-cbc5-4153-a120-51bef819d2aa",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "dc3e0f35-d5e1-4951-8693-5a6ecdd13a9d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Instance",
+			"item": [
+				{
+					"name": "Create instance group",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "auth_token",
+								"type": "text",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4MDEwNjVlNGI1NjNhZWVlZWIzNTkwOTEwZDlmOTc3YTgxMjMwOWEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaWFhc3VuaWFuZGVzIiwiYXVkIjoiaWFhc3VuaWFuZGVzIiwiYXV0aF90aW1lIjoxNTU3MTY5Njc2LCJ1c2VyX2lkIjoibHZ1Z3VHSGVPcGFpSzE1djRsZjdoaE1zZlMyMyIsInN1YiI6Imx2dWd1R0hlT3BhaUsxNXY0bGY3aGhNc2ZTMjMiLCJpYXQiOjE1NTcxNjk2NzYsImV4cCI6MTU1NzE3MzI3NiwiZW1haWwiOiJwQHAuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInBAcC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.bmp7DgLey-CDefBI4YzhZ2FRXVvxODMsr9fjQ1AhH5OGFSeMd9-9vqSdl67_b6Px7kf7WQHEOIXiayhf2spaWuSecixARyw06RR7weD_613l1xBhkwt3fZmGxQwWWf60YkeezSEe2TpXairA2tm2lwWAWLlEARi407uMnIk0MUANZUb3Tzk7RXd4qMguIaSKardlRkOZBvyKCKEHAf-t5cEqNVgtY734_Dta_qSlV9GJ0eDN7-Cu-rR_7gmfkwnCqPaihkKvN8TuLCGiRvR070e-NVCNF5y9cEpWOk07zyEslTbjaxoesDGinjw3XeBV15Vz0yQXUidgxr15IXBxjQ",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Group 1\",\n  \"instances\": [\n  \t{\n  \t\t\"name\": \"I1\",\n\t    \"cores\": 1,\n\t    \"ram\": 1024,\n\t    \"memory\": 100000,\n\t    \"imageId\": \"5cd095eaced98009491fc256\"\n  \t}\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/instance/create-group",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"instance",
+								"create-group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List user instances",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "auth_token",
+								"type": "text",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4MDEwNjVlNGI1NjNhZWVlZWIzNTkwOTEwZDlmOTc3YTgxMjMwOWEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaWFhc3VuaWFuZGVzIiwiYXVkIjoiaWFhc3VuaWFuZGVzIiwiYXV0aF90aW1lIjoxNTU3MTcwMzczLCJ1c2VyX2lkIjoibHZ1Z3VHSGVPcGFpSzE1djRsZjdoaE1zZlMyMyIsInN1YiI6Imx2dWd1R0hlT3BhaUsxNXY0bGY3aGhNc2ZTMjMiLCJpYXQiOjE1NTcxNzAzNzQsImV4cCI6MTU1NzE3Mzk3NCwiZW1haWwiOiJwQHAuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInBAcC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.P-4KxeYD23hyTw0_kF9djRr6wkzZss4K7gvendD8b8YwpsNwLIpfuM5t9g2EId1xn9T0oSu2AnqUFMOEGi9zBSDVmNFWE7nNSouArA1ydjdmdkak1JJbWJJbI3cKd6s3g4AT_3U2RPcSlcV0LyZGo4yvGT1u_BAP0YgvVacN8-dIC26t3b_Y8fGRoCuyDxYgTjkOsrb74nZqRpG3qg9PHDWq91H1-DTfkt3p3843fV91CImH-8yG2zzKv5gnMQvDJB7ib4LyRVoisvuScD2oP-h4S36q1dOlC9CNoxEwkuaWrMA-7-Kxk97xHXRj7Ra1jAANQ-_nD5rj5IU9KBpkOA",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/instance/list",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"instance",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Image",
+			"item": [
+				{
+					"name": "Create docker image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "auth_token",
+								"type": "text",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4MDEwNjVlNGI1NjNhZWVlZWIzNTkwOTEwZDlmOTc3YTgxMjMwOWEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaWFhc3VuaWFuZGVzIiwiYXVkIjoiaWFhc3VuaWFuZGVzIiwiYXV0aF90aW1lIjoxNTU3MTU1OTk5LCJ1c2VyX2lkIjoibHZ1Z3VHSGVPcGFpSzE1djRsZjdoaE1zZlMyMyIsInN1YiI6Imx2dWd1R0hlT3BhaUsxNXY0bGY3aGhNc2ZTMjMiLCJpYXQiOjE1NTcxNTYwMDAsImV4cCI6MTU1NzE1OTYwMCwiZW1haWwiOiJwQHAuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInBAcC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.SJunKIJxmOdbHBLeiRxZpNGiZmZNO-p4i_XRqh9fn9_Zka7368rnol4uNCNSVL8V0LDVIqvE-n4-1lqGwkTXyAoNZJA8I7PQ5ZHqeNwPJuNq5QusTEbGkamzpO2Ea9daPJCfcdtgHMGxPUfuY7lCl0vPAGRTvoZzYfutVKtmrlollDPUGyZ3ptVxZ5VrMA26ilTg4MViUokpuu5NFKJfS6lgLG8HWEYkIV0pnWnZtY4f8P6i87V0lM6vi4svEoWwD34AvIc-HXRy_RgjN7H222hRoacxeLOSMBCXD_tTqznnkFlVBZIrO4IRNHyhTt9U_lHNvlkv99tKoirsDaL3CA",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Ubuntu custom\",\n  \"operatingSystem\": \"Ubuntu 16.04\",\n  \"registryId\": \"changeThisId1\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/image/create/docker",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"image",
+								"create",
+								"docker"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List images",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "auth_token",
+								"type": "text",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4MDEwNjVlNGI1NjNhZWVlZWIzNTkwOTEwZDlmOTc3YTgxMjMwOWEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaWFhc3VuaWFuZGVzIiwiYXVkIjoiaWFhc3VuaWFuZGVzIiwiYXV0aF90aW1lIjoxNTU3MTcwMzczLCJ1c2VyX2lkIjoibHZ1Z3VHSGVPcGFpSzE1djRsZjdoaE1zZlMyMyIsInN1YiI6Imx2dWd1R0hlT3BhaUsxNXY0bGY3aGhNc2ZTMjMiLCJpYXQiOjE1NTcxNzAzNzQsImV4cCI6MTU1NzE3Mzk3NCwiZW1haWwiOiJwQHAuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInBAcC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.P-4KxeYD23hyTw0_kF9djRr6wkzZss4K7gvendD8b8YwpsNwLIpfuM5t9g2EId1xn9T0oSu2AnqUFMOEGi9zBSDVmNFWE7nNSouArA1ydjdmdkak1JJbWJJbI3cKd6s3g4AT_3U2RPcSlcV0LyZGo4yvGT1u_BAP0YgvVacN8-dIC26t3b_Y8fGRoCuyDxYgTjkOsrb74nZqRpG3qg9PHDWq91H1-DTfkt3p3843fV91CImH-8yG2zzKv5gnMQvDJB7ib4LyRVoisvuScD2oP-h4S36q1dOlC9CNoxEwkuaWrMA-7-Kxk97xHXRj7Ra1jAANQ-_nD5rj5IU9KBpkOA",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/image/list",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"image",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4MDEwNjVlNGI1NjNhZWVlZWIzNTkwOTEwZDlmOTc3YTgxMjMwOWEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaWFhc3VuaWFuZGVzIiwiYXVkIjoiaWFhc3VuaWFuZGVzIiwiYXV0aF90aW1lIjoxNTU3MTg0MDA5LCJ1c2VyX2lkIjoiYmZ0NUZ2dmhEdVNUMGdaZFIzUHV2R3pWaFRCMiIsInN1YiI6ImJmdDVGdnZoRHVTVDBnWmRSM1B1dkd6VmhUQjIiLCJpYXQiOjE1NTcxODQwMTAsImV4cCI6MTU1NzE4NzYxMCwiZW1haWwiOiJwQHAuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInBAcC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.Wt7UhhQiPDRhk-NHsQh26lmKmR315rCyFvkzwlMCnY0tqCU_fA2fzjldFST8gLynbxCSz3q1tEysZIliNQq1b_xp19RG9ADKgM6s33Wc_qGTtp7OwgF03VcpDqaWzeMOFpZRUEcXOtMUEjcc3WOfFomh7jqhNo6kJW7nSJVav3ZAcuauEIAsiNNNIKHcRepKwr6QLweHDjUSH12htutf9LrofnmEyTDCYr_rhk5OyhCqUeX0PnWGf894KABY_KkBO_HrHKEPiD0CihbEzV2eTM0E1t2s3iMqJ4yuqrdIfqLxMc0YmE3UZJzUitPzARgb_AV-7JT_Hh0u9a3h_vIGGA",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "auth_token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "191d5d63-5699-4830-be80-60353af53b3e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c732cb11-027c-476a-965b-715dedeb8944",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "6ddd9d5b-0450-495f-a465-04e6747e8c27",
+			"key": "baseUrl",
+			"value": "http://localhost:3005/api/v1",
+			"type": "string"
+		},
+		{
+			"id": "8c9d261f-93d1-4b72-a194-f4d734985048",
+			"key": "baseUrl2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "9785ee98-b891-42ba-8bfc-09aa4d633a87",
+			"key": "portusBaseUrl",
+			"value": "https://felipes-macbook.local",
+			"type": "string"
+		}
+	]
+}

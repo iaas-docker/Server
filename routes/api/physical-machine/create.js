@@ -13,7 +13,7 @@ router.post('/', validateInput(), (req, res) => {
     return ErrorHandler.processBadRequestError(errors, res);
   }
   
-  const {name, mac, cores, memory, freeCores,freeRam, freeMemory, operatingSystem, ipAddressId} = req.body;
+  const {name, mac, cores, ram, memory, freeCores,freeRam, freeMemory, operatingSystem, ipAddressId} = req.body;
   Authentication.verifyAdminToken(req.headers.auth_token)
     .then(async response => {
       let errorMessage = await performChecks(mac, ipAddressId);
@@ -23,7 +23,7 @@ router.post('/', validateInput(), (req, res) => {
 
       await changeIpStateToAssigned(ipAddressId);
 
-      let newMachine = {name, mac, cores, memory, freeCores, freeRam, freeMemory, operatingSystem, ipAddressId, '_id': mac};
+      let newMachine = {name, mac, cores, ram, memory, freeCores, freeRam, freeMemory, operatingSystem, ipAddressId};
       newMachine.state = MachineStates.RUNNING;
       return new PhysicalMachine(newMachine).save();
     })
@@ -37,7 +37,7 @@ async function changeIpStateToAssigned(ipId) {
 }
 
 async function performChecks(mac, ipAddressId) {
-  if ( (await PhysicalMachine.findById(mac)) != null){
+  if ( (await PhysicalMachine.findOne({mac})) != null){
     return 'The machine already exists.';
   }
   let ipAddress = await IpAddress.findById(ipAddressId);

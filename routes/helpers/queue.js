@@ -1,4 +1,5 @@
-const QUEUE_URL = "https://sqs.sa-east-1.amazonaws.com/916203701249/iaas-queue.fifo";
+const QUEUE_BASE_URL = process.env.QUEUE_BASE_URL;
+const WORKER_QUEUE = process.env.WORKER_QUEUE;
 AWS = require('aws-sdk');
 
 AWS.config.update({
@@ -9,13 +10,14 @@ AWS.config.update({
 
 let sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 
-module.exports.sendMessage = function(message, messageGroupId){
+module.exports.sendMessage = function(message, messageGroupId, queueName){
   return new Promise((resolve, reject) => {
+    if (!queueName){
+      queueName = WORKER_QUEUE
+    }
     let params = {
       MessageBody: JSON.stringify(message),
-      QueueUrl: QUEUE_URL,
-      // DelaySeconds: '3',
-      // MessageDeduplicationId: 'STRING_VALUE',
+      QueueUrl: QUEUE_BASE_URL + queueName,
       MessageGroupId: messageGroupId
     };
 

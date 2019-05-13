@@ -15,6 +15,7 @@ router.post('/:id/stop', (req, res) => {
         ErrorHandler.errorCustomMessage("Instance not found or not owned by user", res);
       }
 
+      inst.action = STOP+':'+new Date().getTime();
       await queue.sendMessage(inst, STOP, inst.physicalMachineId+'.fifo');
       res.json({result: 'processing'});
     })

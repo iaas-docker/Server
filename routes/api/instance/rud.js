@@ -35,6 +35,9 @@ router.get('/:id', (req, res) => {
   Authentication.verifyUserToken(req.headers.auth_token)
     .then((user) => Instance.findOne({_id: req.params.id, userId: user._id}).lean())
     .then(async inst => {
+      if (inst == null){
+        return ErrorHandler.errorCustomMessage("Instance not found or doesn't belong to user", res);
+      }
       inst = await formatInstance(inst);
       res.json(inst);
     })

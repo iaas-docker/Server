@@ -26,7 +26,7 @@ router.post('/', validateInput(), (req, res) => {
       return Authentication.verifyUserToken(req.headers.auth_token);
     })
     .then((user) => {
-      userId = user['_id'];
+      userId = user._id;
       instanceGroup = {name, userId};
       return new InstanceGroup(instanceGroup).save();
     })

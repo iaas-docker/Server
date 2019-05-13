@@ -17,7 +17,7 @@ router.post('/', validateInput(), (req, res, next) => {
   let newUser = {email, name, admin: false};
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then( response => {
-      newUser['_id'] = response.user.uid;
+      newUser.firebaseId = response.user.uid;
       return createPortusRequest(email, name, password);
     })
     .then( response => {
@@ -40,7 +40,7 @@ function createPortusRequest(email, name, password) {
       email: email,
       display_name: name+':'+email,
       password: password,
-      bot: true
+      bot: false
     }
   });
 }

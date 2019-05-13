@@ -11,13 +11,17 @@ class Authentication {
     return new Promise((resolve, reject) => {
       admin.auth().verifyIdToken(idToken)
         .then((decodedToken) => {
-          return User.findById(decodedToken.uid)
+          return User.findOne({firebaseId: decodedToken.uid})
         })
         .then( user => {
-          if (user && ( (isAdmin && user.admin ) || !isAdmin) )
+          if (user && ( isAdmin && user.admin ) )
             resolve(user);
-          else
+          if (user && !isAdmin)
+            resolve(user);
+          if (user && isAdmin)
             reject('User is not an admin');
+          else
+            reject('Authentication failed');
         })
         .catch((error) => reject(error));
     });

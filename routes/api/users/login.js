@@ -14,8 +14,8 @@ router.post('/', validateInput(), (req, res) => {
   const {email, password} = req.body;
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then( response => {
-      let newUser = response.user;
-      return createUserToken(newUser.uid)
+      let loggingUser = response.user;
+      return createUserToken()
     }).then( token => {
       res.send(token);
       firebase.auth().signOut();
@@ -24,7 +24,7 @@ router.post('/', validateInput(), (req, res) => {
   } );
 });
 
-function createUserToken(userId) {
+function createUserToken() {
   return new Promise((resolve, reject) => {
     firebase.auth().currentUser.getIdToken(true)
       .then((customToken) => { resolve(customToken) })

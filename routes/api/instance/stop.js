@@ -4,18 +4,18 @@ const queue = require('../../helpers/queue.js');
 const {Instance} = require('../../models/Instance');
 const ErrorHandler = require('../../helpers/error-handler');
 const Authentication = require('../../helpers/authentication');
-const RESTART = 'RESTART';
+const STOP = 'STOP';
 
-router.post('/:id/restart', (req, res) => {
+router.post('/:id/stop', (req, res) => {
   Authentication.verifyUserToken(req.headers.auth_token)
-    .then((user) => Instance.findOne({_id: req.params.id, userId: user['_id']}).lean())
+    .then((user) => Instance.findOne({_id: req.params.id, userId: user._id }).lean())
     .then(async inst => {
-      //Todo: verify if instance is paused
+      //Todo: verify if instance is already paused
       if (inst == null){
         ErrorHandler.errorCustomMessage("Instance not found or not owned by user", res);
       }
 
-      await queue.sendMessage(inst, RESTART, inst.physicalMachineId+'.fifo');
+      await queue.sendMessage(inst, STOP, inst.physicalMachineId+'.fifo');
       res.json({result: 'processing'});
     })
     .catch(err => ErrorHandler.processError(err, res));

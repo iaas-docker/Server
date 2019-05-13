@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 const {body} = require('express-validator/check');
 
 var userSchema = new mongoose.Schema({
-  _id: String,
   name: String,
   email: String,
   portusId: Number,
   portusToken: String,
+  firebaseId: String,
   admin: Boolean
 });
 

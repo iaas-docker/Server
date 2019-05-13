@@ -23,7 +23,8 @@ router.post('/', validateInput(), (req, res) => {
 
       await changeIpStateToAssigned(ipAddressId);
 
-      let newMachine = {name, mac, cores, ram, memory, freeCores, freeRam, freeMemory, operatingSystem, ipAddressId};
+      let newMachine = {name, mac, cores, ram, memory, freeCores, freeRam, freeMemory,
+        assignedRanges:[], operatingSystem, ipAddressId};
       newMachine.state = MachineStates.RUNNING;
       return new PhysicalMachine(newMachine).save();
     })

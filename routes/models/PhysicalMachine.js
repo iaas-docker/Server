@@ -9,6 +9,7 @@ var physicalMachineSchema = new mongoose.Schema({
   freeCores: Number,
   freeRam: Number,
   freeMemory: Number,
+  assignedRanges: [Number],
   operatingSystem: String,
   ipAddressId: String,
   state: String

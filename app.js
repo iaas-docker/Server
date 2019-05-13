@@ -32,7 +32,13 @@ app.use(function(req, res, next) {
 
 //Initialize mongoose
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true});
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    // sets how many times to try reconnecting
+    reconnectTries: Number.MAX_VALUE,
+    // sets the delay between every retry (milliseconds)
+    reconnectInterval: 2000
+});
 
 //Initialize firebase client
 var firebase = require("firebase/app");

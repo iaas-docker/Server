@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const {header, body, validationResult} = require('express-validator/check');
-const {Image} = require('../../models/Image');
-const {DockerImage, TYPE} = require('../../models/DockerImage');
+const {Image, TYPE} = require('../../models/Image');
+const {DockerImage} = require('../../models/DockerImage');
 const Authentication = require('../../helpers/authentication');
 const ErrorHandler = require('../../helpers/error-handler');
 
@@ -13,12 +13,12 @@ router.post('/docker', validateInput(), (req, res) => {
     return ErrorHandler.processBadRequestError(errors, res);
   }
 
-  const {name, opertingSystem, registryId} = req.body;
+  const {name, operatingSystem: operatingSystem, dockerImageId, tag} = req.body;
   let newImage = {type: TYPE.DOCKER};
-  let newDockerImage = {registryId, opertingSystem, name};
+  let newDockerImage = {dockerImageId, tag, operatingSystem, name};
 
   Authentication.verifyAdminToken(req.headers.auth_token)
-    .then((r) => DockerImage.findOne({ registryId }))
+    .then((r) => DockerImage.findOne({ tag }))
     .then(response => {
       if (response != null) {
         return ErrorHandler.errorCustomMessage('The docker image already exists.', res);
@@ -37,7 +37,8 @@ function validateInput() {
   return [
     body('name').isString(),
     body('operatingSystem').isString(),
-    body('registryId').isString(),
+    body('tag').isString(),
+    body('dockerImageId').isString(),
     header('auth_token').exists()
   ]
 }

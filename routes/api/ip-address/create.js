@@ -17,7 +17,7 @@ router.post('/', validateInput(), (req, res) => {
     .then((r) => IpAddress.findOne({ ip, mask, gateway }))
     .then(response => {
       if (response != null){
-        return ErrorHandler.errorCustomMessage('The ip address exists.', res);
+        return ErrorHandler.errorCustomMessage('The ip address already exists.', res);
       }
 
       let newIp = {ip, mask, gateway};

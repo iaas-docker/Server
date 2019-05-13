@@ -7,6 +7,12 @@ var imageSchema = new mongoose.Schema({
 
 var Image = mongoose.model('Image', imageSchema);
 
+const TYPE = Object.freeze({
+  DOCKER:     "docker",
+  VM:         "vm",
+});
+
 module.exports = {
-  Image: Image
+  Image: Image,
+  TYPE: TYPE
 };

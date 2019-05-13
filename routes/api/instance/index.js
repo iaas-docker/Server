@@ -3,6 +3,7 @@ const router = express.Router();
 
 router.use('/create-group', require('./create-group'));
 router.use('/', require('./delete'));
+router.use('/', require('./restart'));
 router.use('/', require('./rud'));
 
 module.exports = router;

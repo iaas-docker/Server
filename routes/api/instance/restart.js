@@ -4,9 +4,9 @@ const queue = require('../../helpers/queue.js');
 const {Instance} = require('../../models/Instance');
 const ErrorHandler = require('../../helpers/error-handler');
 const Authentication = require('../../helpers/authentication');
-const DELETE = 'DELETE';
+const RESTART = 'RESTART';
 
-router.delete('/:id', (req, res) => {
+router.post('/:id/restart', (req, res) => {
   console.log('File: rud.js, Line 34', req.params.id);
   Authentication.verifyUserToken(req.headers.auth_token)
     .then((user) => Instance.findOne({_id: req.params.id, userId: user['_id']}).lean())
@@ -16,7 +16,7 @@ router.delete('/:id', (req, res) => {
         ErrorHandler.errorCustomMessage("Instance not found or not owned by user", res);
       }
 
-      await queue.sendMessage(inst, DELETE, inst.physicalMachineId+'.fifo');
+      await queue.sendMessage(inst, RESTART, inst.physicalMachineId+'.fifo');
       res.json({result: 'processing'});
     })
     .catch(err => ErrorHandler.processError(err, res));

@@ -5,27 +5,29 @@ const {IpAddress, IpStates} = require('../../models/IpAddress');
 const Authentication = require('../../helpers/authentication');
 const ErrorHandler = require('../../helpers/error-handler');
 
-router.post('/', validateInput(), (req, res) => {
+router.post('/', validateInput(), async (req, res) => {
   //Verify all required params are present
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return ErrorHandler.processBadRequestError(errors, res);
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ErrorHandler.processBadRequestError(errors, res);
+    }
+
+    const {ip, mask, gateway} = req.body;
+
+    let auth = await Authentication.verifyAdminToken(req.headers.auth_token)
+    let ipAddress = await IpAddress.findOne({ip, mask, gateway});
+    if (ipAddress != null) {
+      return ErrorHandler.errorCustomMessage('The ip address already exists.', res);
+    }
+
+    let newIp = {ip, mask, gateway};
+    newIp.state = IpStates.UN_ASSIGNED;
+    let newIpAddress = await IpAddress(newIp).save();
+    return res.json(newIpAddress);
+  } catch (err){
+    ErrorHandler.processError(err, res);
   }
-
-  const {ip, mask, gateway} = req.body;
-  Authentication.verifyAdminToken(req.headers.auth_token)
-    .then((r) => IpAddress.findOne({ ip, mask, gateway }))
-    .then(response => {
-      if (response != null){
-        return ErrorHandler.errorCustomMessage('The ip address already exists.', res);
-      }
-
-      let newIp = {ip, mask, gateway};
-      newIp.state = IpStates.UN_ASSIGNED;
-      return new IpAddress(newIp).save();
-    })
-    .then(response => res.json(response))
-    .catch(err => ErrorHandler.processError(err, res));
 
 });
 

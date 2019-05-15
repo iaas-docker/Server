@@ -6,7 +6,7 @@ class ErrorHandler{
     let error = {
       message: message
     };
-    return res.status(422).send(error);
+    return res.status(422).json(error);
   }
 
   static processBadRequestError(errors, res){
@@ -14,7 +14,6 @@ class ErrorHandler{
   }
 
   static processError(err, res){
-    console.log('File: error-handler.js, Line 17', err);
     let error = {
       message: JSON.parse(JSON.stringify(err, Object.getOwnPropertyNames(err)))
     };

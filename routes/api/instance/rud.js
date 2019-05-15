@@ -31,7 +31,6 @@ router.get('/list', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  console.log('File: rud.js, Line 34', req.params.id);
   Authentication.verifyUserToken(req.headers.auth_token)
     .then((user) => Instance.findOne({_id: req.params.id, userId: user._id}).lean())
     .then(async inst => {

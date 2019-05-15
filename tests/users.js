@@ -10,19 +10,6 @@ let authToken;
 
 describe("Users", () => {
 
-  // before(() => {
-  //   var request = chai.request(app);
-  //   return request
-  //     .post(baseAPI+'/users/login')
-  //     .set('content-type', 'application/json')
-  //     .send({email: 'w@w.com', password: 'asdasdasd'})
-  //     .then((res) => {
-  //       res.should.have.status(200);
-  //       res.text.should.have.lengthOf.above(10);
-  //       authToken = res.text;
-  //     });
-  // });
-
   let fakeMail =  Math.random().toString(36).substring(2, 15) +'@u.com';
 
   describe("POST /users/signup", () => {

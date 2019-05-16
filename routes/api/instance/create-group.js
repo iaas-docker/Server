@@ -9,47 +9,47 @@ const ErrorHandler = require('../../helpers/error-handler');
 const queue = require('../../helpers/queue.js');
 const WORKER = 'worker';
 
-router.post('/', validateInput(), (req, res) => {
-  //Verify all required params are present
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return ErrorHandler.processBadRequestError(errors, res);
+router.post('/', validateInput(), async (req, res) => {
+
+  try {
+    //Verify all required params are present
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ErrorHandler.processBadRequestError(errors, res);
+    }
+
+    const {name, instances} = req.body;
+    let userId, instanceGroup;
+    let imageValidation = await validateImageIds(instances)
+    if (imageValidation != undefined) {
+      return ErrorHandler.errorCustomMessage('The image '+ imageValidation+' does not exist', res);
+    }
+    let user = await Authentication.verifyUserToken(req.headers.auth_token);
+    userId = user._id;
+    instanceGroup = {name, userId};
+    let newInstanceGroup = await new InstanceGroup(instanceGroup).save();
+
+    let list = [];
+    for (const instance of instances) {
+      const {name, cores, ram, memory, imageId} = instance;
+      let newInstance = {
+        name, cores, ram, memory, imageId, userId: userId,
+        instanceGroupId: newInstanceGroup['_id'], baseImageId: imageId,
+        state: InstanceStates.CREATING, stateMessage: 'Allocating resources'
+      };
+      let createdInst = await (new Instance(newInstance)).save();
+      await queue.sendMessage(createdInst, WORKER);
+      list.push(createdInst);
+    }
+
+    res.json({
+      '_id': newInstanceGroup['_id'],
+      name: newInstanceGroup.name,
+      instances: list
+    });
+  } catch (err){
+    ErrorHandler.processError(err, res)
   }
-
-  const {name, instances} = req.body;
-  let userId, instanceGroup;
-  validateImageIds(instances)
-    .then((result) => {
-      if (result != undefined){
-        return ErrorHandler.errorCustomMessage('The image '+result+' does not exist', res);
-      }
-      return Authentication.verifyUserToken(req.headers.auth_token);
-    })
-    .then((user) => {
-      userId = user._id;
-      instanceGroup = {name, userId};
-      return new InstanceGroup(instanceGroup).save();
-    })
-    .then(async response => {
-      let list = [];
-      for (const instance of instances) {
-        const {name, cores, ram, memory, imageId} = instance;
-        let newInstance = {name, cores, ram, memory, imageId, userId: userId,
-          instanceGroupId: response['_id'], baseImageId: imageId,
-          state: InstanceStates.CREATING, stateMessage: 'Allocating resources'
-        };
-        let createdInst = await (new Instance(newInstance)).save();
-        await queue.sendMessage(createdInst, WORKER);
-        list.push(createdInst);
-      }
-
-      res.json({
-        '_id':response['_id'],
-        name: response.name,
-        instances: list
-      });
-    })
-    .catch(err => ErrorHandler.processError(err, res));
 
 });
 

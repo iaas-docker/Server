@@ -8,7 +8,7 @@ chai.use(chaiHttp);
 chai.should();
 
 describe("Instances", () => {
-  let authToken;
+  let authToken, instanceId;
 
   before(() => {
     return new Promise((resolve, reject) => {
@@ -69,7 +69,6 @@ describe("Instances", () => {
           res.body.should.have.property('instances');
           res.body.instances.should.be.an('array');
           res.body.instances.forEach(obj => {
-            console.log('File: instance.js, Line 72', obj);
             obj.should.be.an('object');
             obj.should.have.property('imageId');
             obj.should.have.property('userId');
@@ -109,29 +108,74 @@ describe("Instances", () => {
     });
 
   });
-  //
-  // describe("GET /image/list", () => {
-  //   it("should list all images", (done) => {
-  //     chai.request(app)
-  //       .get(baseAPI+'/image/list')
-  //       .set('auth_token', authToken)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.should.be.an('array');
-  //         for (let obj in res.data) {
-  //           obj.should.be.an('object');
-  //           obj.should.have.property('type');
-  //           obj.should.have.property('backedById');
-  //           obj.should.have.property('backedBy');
-  //           obj.backedBy.should.be.an('object');
-  //           obj.backedBy.should.have.property('dockerImageId');
-  //           obj.backedBy.should.have.property('tag');
-  //           obj.backedBy.should.have.property('operatingSystem');
-  //         }
-  //         done();
-  //       });
-  //   });
-  //
-  // });
+
+
+  describe("GET /instance/list", () => {
+
+    it("should list all instances", (done) => {
+      chai.request(app)
+        .get(baseAPI+'/instance/list')
+        .set('auth_token', authToken)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+          res.body.should.have.property('instance_groups');
+          res.body.instance_groups.forEach(instanceGroup => {
+            instanceGroup.should.be.an('object');
+            instanceGroup.should.have.property('_id');
+            instanceGroup.should.have.property('name');
+            instanceGroup.should.have.property('userId');
+            instanceGroup.should.have.property('instances');
+            instanceGroup.instances.should.be.an('array');
+            instanceGroup.instances.forEach(inst => {
+              inst.should.have.property('_id');
+              instanceId = inst._id;
+              inst.should.have.property('imageId');
+              inst.should.have.property('userId');
+              inst.should.have.property('instanceGroupId');
+              inst.should.have.property('baseImageId');
+              inst.should.have.property('state');
+              inst.should.have.property('physicalMachine');
+            });
+          });
+          done();
+        });
+    });
+
+  });
+
+  describe("GET /instance/:id", () => {
+
+    it("should list all instances", (done) => {
+      chai.request(app)
+        .get(baseAPI+'/instance/'+instanceId)
+        .set('auth_token', authToken)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.an('object');
+          res.body.should.have.property('_id');
+          res.body.should.have.property('imageId');
+          res.body.should.have.property('userId');
+          res.body.should.have.property('instanceGroupId');
+          res.body.should.have.property('baseImageId');
+          res.body.should.have.property('state');
+          res.body.should.have.property('physicalMachine');
+          done();
+        });
+    });
+
+    it("should fail as the instance doesn't exist", (done) => {
+      chai.request(app)
+        .get(baseAPI+'/instance/'+instanceId.slice(0, instanceId.length-2)+'dd')
+        .set('auth_token', authToken)
+        .end((err, res) => {
+          res.should.have.status(422);
+          res.body.should.be.an('object');
+          res.body.should.have.property('message');
+          done();
+        });
+    });
+
+  });
 
 });

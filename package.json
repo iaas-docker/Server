@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "mocha --recursive tests/*.js --timeout 7000 --exit"
+    "test": "mocha --recursive tests/*.js --timeout 15000 --exit"
   },
   "dependencies": {
     "aws-sdk": "^2.448.0",

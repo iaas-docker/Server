@@ -6,31 +6,33 @@ const {IpAddress, IpStates} = require('../../models/IpAddress');
 const Authentication = require('../../helpers/authentication');
 const ErrorHandler = require('../../helpers/error-handler');
 
-router.post('/', validateInput(), (req, res) => {
+router.post('/', validateInput(), async (req, res) => {
   //Verify all required params are present
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return ErrorHandler.processBadRequestError(errors, res);
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ErrorHandler.processBadRequestError(errors, res);
+    }
+
+    const {name, mac, cores, ram, memory, freeCores, freeRam, freeMemory, operatingSystem, ipAddressId} = req.body;
+    await Authentication.verifyAdminToken(req.headers.auth_token);
+    let errorMessage = await performChecks(mac, ipAddressId);
+    if (errorMessage !== undefined) {
+      return ErrorHandler.errorCustomMessage(errorMessage, res);
+    }
+
+    await changeIpStateToAssigned(ipAddressId);
+
+    let newMachine = {
+      name, mac, cores, ram, memory, freeCores, freeRam, freeMemory,
+      assignedRanges: [], operatingSystem, ipAddressId
+    };
+    newMachine.state = MachineStates.RUNNING;
+    let newPhysicalMachine = await new PhysicalMachine(newMachine).save();
+    return res.json(newPhysicalMachine);
+  } catch (err){
+    ErrorHandler.processError(err, res)
   }
-  
-  const {name, mac, cores, ram, memory, freeCores,freeRam, freeMemory, operatingSystem, ipAddressId} = req.body;
-  Authentication.verifyAdminToken(req.headers.auth_token)
-    .then(async response => {
-      let errorMessage = await performChecks(mac, ipAddressId);
-      if (errorMessage !== undefined ){
-        return ErrorHandler.errorCustomMessage(errorMessage, res);
-      }
-
-      await changeIpStateToAssigned(ipAddressId);
-
-      let newMachine = {name, mac, cores, ram, memory, freeCores, freeRam, freeMemory,
-        assignedRanges:[], operatingSystem, ipAddressId};
-      newMachine.state = MachineStates.RUNNING;
-      return new PhysicalMachine(newMachine).save();
-    })
-    .then(response => res.json(response))
-    .catch(err => ErrorHandler.processError(err, res));
-
 });
 
 async function changeIpStateToAssigned(ipId) {

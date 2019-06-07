@@ -47,7 +47,7 @@ PORTUS_BASE_URL = //Define as: https://FQDN
 AWS_ACCESS_KEY = //AWS access key
 AWS_ACCESS_SECRET = //AWS secret
 QUEUE_BASE_URL = //SQS FIFO queue base url. E.g. https://sqs.sa-east-1.amazonaws.com/916245701249/
-WORKER_QUEUE = //Worker queue name
+WORKER_QUEUE = //Create a FIFO queue to be used by the worker, put its name here.
 ```
 ## Usage
 

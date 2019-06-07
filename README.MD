@@ -30,6 +30,8 @@ Generate a [Portus application token](http://port.us.org/features/application_to
 4. Create a new user, make it an admin user.
 5. Enter to the new user profile, create the application token there.
 
+Pull the [empty-image](https://hub.docker.com/r/lfplazas10/empty-image) from the public docker registry. Push it to the newly created registry with tag YOUR_FQDN/empty-image
+
 Use the package manager [npm](https://www.npmjs.com/get-npm) to install all the project dependencies (base path):
 
 ```bash
